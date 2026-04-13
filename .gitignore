@@ -1,0 +1,16 @@
+# Gradle
+.gradle/
+build/
+
+# Local machine / secrets
+local.properties
+
+# Android Studio
+.idea/
+
+# OS
+.DS_Store
+
+# Keystores (never commit signing keys)
+*.jks
+*.keystore
