@@ -1,0 +1,41 @@
+<resources>
+    <!-- Google test App ID — replace with your real AdMob app ID before release. -->
+    <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <!-- Google test banner unit — replace with your real banner ad unit ID before release. -->
+    <string name="admob_banner_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+
+    <string name="app_name">Scanlio</string>
+    <string name="scan_instruction">Align code inside the frame</string>
+    <string name="camera_permission_required">Camera access is required to scan QR codes and barcodes.</string>
+    <string name="grant_permission">Enable camera</string>
+    <string name="last_scan">Decoded</string>
+    <string name="format_label">Format</string>
+    <string name="brand_tagline">QR · Barcode</string>
+    <string name="live_view">Live</string>
+    <string name="torch_on">Flash on</string>
+    <string name="torch_off">Flash off</string>
+    <string name="waiting_scan">Awaiting scan</string>
+
+    <string name="home_title">Start your scan</string>
+    <string name="home_subtitle">QR code or barcode — tap one to scan code now</string>
+    <string name="scan_qr_code">QR code</string>
+    <string name="scan_barcode">Barcode</string>
+    <string name="home_qr_card_hint">Links, menus, Wi‑Fi &amp; more</string>
+    <string name="home_barcode_card_hint">Product &amp; retail barcodes</string>
+    <string name="scan_mode_qr_title">QR code</string>
+    <string name="scan_mode_barcode_title">Barcode</string>
+    <string name="scan_instruction_qr">Align the QR code inside the frame</string>
+    <string name="scan_instruction_barcode">Align the barcode inside the frame</string>
+    <string name="result_title">Scan result</string>
+    <string name="result_body_title">Scanned content</string>
+    <string name="back">Back</string>
+    <string name="scan_again_same">Scan again (same mode)</string>
+    <string name="scan_again_home">Scan again</string>
+    <string name="copy">Copy</string>
+    <string name="copied">Copied to clipboard</string>
+    <string name="clipboard_label">Scan result</string>
+    <string name="open_in_browser">Open in browser</string>
+    <string name="open_browser_failed">Could not open link</string>
+    <string name="splash_tagline">QR · Barcode scanner</string>
+    <string name="splash_tap_hint">Tap anywhere to continue</string>
+</resources>
