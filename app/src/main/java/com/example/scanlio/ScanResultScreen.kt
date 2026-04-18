@@ -22,6 +22,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.ContentCopy
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.material.icons.outlined.Sms
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -68,7 +71,9 @@ fun ScanResultScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val openUri = remember(payload) { webUriForOpen(payload) }
+    val contactActions = remember(payload) { contactActionSpec(payload) }
     val copiedMessage = stringResource(R.string.copied)
+    val contactFailedMessage = stringResource(R.string.contact_action_failed)
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -191,6 +196,82 @@ fun ScanResultScreen(
                     style = MaterialTheme.typography.titleMedium,
                     color = scheme.onSurface.copy(alpha = 0.45f),
                 )
+            }
+
+            if (contactActions.hasAny) {
+                val secondaryButtonColors = ButtonDefaults.buttonColors(
+                    containerColor = scheme.secondaryContainer,
+                    contentColor = scheme.onSecondaryContainer,
+                )
+                if (contactActions.dialUri != null) {
+                    Spacer(modifier = Modifier.height(14.dp))
+                    Button(
+                        onClick = {
+                            if (!context.startDial(contactActions.dialUri)) {
+                                scope.launch { snackbarHostState.showSnackbar(contactFailedMessage) }
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = secondaryButtonColors,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Phone,
+                            contentDescription = null,
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = stringResource(R.string.dial_phone),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    }
+                }
+                if (contactActions.smsUri != null) {
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Button(
+                        onClick = {
+                            if (!context.startSmsTo(contactActions.smsUri)) {
+                                scope.launch { snackbarHostState.showSnackbar(contactFailedMessage) }
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = secondaryButtonColors,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Sms,
+                            contentDescription = null,
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = stringResource(R.string.send_sms),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    }
+                }
+                if (contactActions.mailtoUri != null) {
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Button(
+                        onClick = {
+                            if (!context.startMailto(contactActions.mailtoUri)) {
+                                scope.launch { snackbarHostState.showSnackbar(contactFailedMessage) }
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = secondaryButtonColors,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Email,
+                            contentDescription = null,
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = stringResource(R.string.send_email),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    }
+                }
             }
 
             if (openUri != null) {

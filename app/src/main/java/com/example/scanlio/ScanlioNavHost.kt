@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 
 private const val ROUTE_SPLASH = "splash"
 private const val ROUTE_HOME = "home"
+private const val ROUTE_SETTINGS = "settings"
 private const val ROUTE_SCAN = "scan"
 private const val ROUTE_RESULT = "result"
 
@@ -39,7 +40,11 @@ fun ScanlioNavHost(
             HomeScreen(
                 onScanQr = { navController.navigate("$ROUTE_SCAN/${ScanMode.Qr.toRouteSegment()}") },
                 onScanBarcode = { navController.navigate("$ROUTE_SCAN/${ScanMode.Barcode.toRouteSegment()}") },
+                onOpenSettings = { navController.navigate(ROUTE_SETTINGS) },
             )
+        }
+        composable(ROUTE_SETTINGS) {
+            SettingsScreen(onBack = { navController.popBackStack() })
         }
         composable(
             route = "$ROUTE_SCAN/{mode}",

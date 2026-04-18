@@ -8,11 +8,10 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- AdMob
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    -->
 
     <application
+        android:name=".ScanlioApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -22,11 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Scanlio">
 
-        <!-- AdMob — uncomment with play-services-ads dependency.
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id" />
-        -->
 
         <activity
             android:name=".MainActivity"

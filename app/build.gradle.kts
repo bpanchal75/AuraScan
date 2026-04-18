@@ -48,9 +48,9 @@ dependencies {
     implementation(libs.play.services.mlkit.barcode.scanning)
     // Force aligned libandroidx.graphics.path.so (Compose pulls an older transitive without 16 KB ELF alignment).
     implementation(libs.androidx.graphics.path)
-    // AdMob — uncomment when ready (also restore AndroidManifest + ScanlioApplication + AdMobBanner.kt body).
-    // implementation(libs.google.play.services.ads)
+    implementation(libs.google.play.services.ads)
 
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)

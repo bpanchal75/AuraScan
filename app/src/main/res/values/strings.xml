@@ -36,6 +36,20 @@
     <string name="clipboard_label">Scan result</string>
     <string name="open_in_browser">Open in browser</string>
     <string name="open_browser_failed">Could not open link</string>
+    <string name="dial_phone">Dial number</string>
+    <string name="send_sms">Send text</string>
+    <string name="send_email">Send email</string>
+    <string name="contact_action_failed">Could not open app for this action</string>
     <string name="splash_tagline">QR · Barcode scanner</string>
-    <string name="splash_tap_hint">Tap anywhere to continue</string>
+    <string name="splash_logo_cd">Scanlio — QR and barcode scanner</string>
+    <string name="splash_continue">Continue</string>
+    <string name="splash_auto_hint">Ready in a moment</string>
+    <string name="splash_tap_hint">Tap anywhere to skip</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_theme_section">Appearance</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_system">System default</string>
+    <string name="settings_theme_hint">Choose light, dark, or match your device</string>
 </resources>
