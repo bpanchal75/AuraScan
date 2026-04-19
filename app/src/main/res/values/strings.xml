@@ -55,6 +55,13 @@
     <string name="settings_theme_dark">Dark</string>
     <string name="settings_theme_system">System default</string>
     <string name="settings_theme_hint">Choose light, dark, or match your device</string>
+    <string name="settings_support_section">Support the app</string>
+    <string name="settings_support_body">AuraScan is an independent side project built and tested by a QA professional. If it helps you at work or day to day, you can chip in to keep it improving.</string>
+    <string name="settings_donate">Donate or tip</string>
+    <string name="settings_donate_hint">Opens in your browser</string>
+    <!-- Optional: paste your Ko-fi, PayPal.me, Buy Me a Coffee, or other https link. Leave empty to hide the button. -->
+    <string name="donation_page_url" translatable="false"></string>
+
     <string name="settings_contact_us">Contact us</string>
     <string name="settings_contact_us_hint">Tap the address to open your email app</string>
     <string name="support_email" translatable="false">bpanchal75@gmail.com</string>

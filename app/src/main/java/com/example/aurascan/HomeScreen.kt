@@ -1,6 +1,7 @@
 package com.example.aurascan
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,10 +32,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -49,6 +53,11 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
 ) {
     val scheme = MaterialTheme.colorScheme
+    val logoPlateColor = if (scheme.surface.luminance() > 0.55f) {
+        Color.White
+    } else {
+        scheme.surfaceContainerHigh
+    }
 
     Box(
         modifier = modifier
@@ -107,20 +116,29 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(4.dp))
                 Spacer(modifier = Modifier.weight(1f))
 
-                Box(
-                    modifier = Modifier
-                        .width(48.dp)
-                        .height(4.dp)
-                        .clip(RoundedCornerShape(2.dp))
-                        .background(scheme.primary.copy(alpha = 0.85f)),
-                )
-                Spacer(modifier = Modifier.height(24.dp))
+                Surface(
+                    modifier = Modifier.size(100.dp),
+                    shape = RoundedCornerShape(22.dp),
+                    color = logoPlateColor,
+                    tonalElevation = 0.dp,
+                    shadowElevation = 6.dp,
+                    border = BorderStroke(1.dp, scheme.outline.copy(alpha = 0.1f)),
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.aurascan_splash_logo),
+                        contentDescription = stringResource(R.string.splash_logo_cd),
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Fit,
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
                     text = stringResource(R.string.home_title),
                     style = MaterialTheme.typography.displaySmall,
                     color = scheme.onBackground,
                     textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
@@ -128,7 +146,9 @@ fun HomeScreen(
                     style = MaterialTheme.typography.bodyLarge,
                     color = scheme.onSurface.copy(alpha = 0.68f),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp),
                 )
                 Spacer(modifier = Modifier.height(36.dp))
 

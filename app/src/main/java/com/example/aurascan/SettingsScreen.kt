@@ -1,5 +1,6 @@
 package com.example.aurascan
 
+import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -9,11 +10,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.VolunteerActivism
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -51,7 +57,9 @@ fun SettingsScreen(
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val supportEmail = stringResource(R.string.support_email)
+    val donationUrl = stringResource(R.string.donation_page_url)
     val contactFailedMessage = stringResource(R.string.contact_action_failed)
+    val openLinkFailed = stringResource(R.string.open_browser_failed)
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -114,6 +122,62 @@ fun SettingsScreen(
                 selected = themeMode == ThemeMode.System,
                 onSelect = { scope.launch { repository.setThemeMode(ThemeMode.System) } },
             )
+
+            Spacer(modifier = Modifier.height(36.dp))
+            Text(
+                text = stringResource(R.string.settings_support_section),
+                style = MaterialTheme.typography.titleMedium,
+                color = scheme.onSurface,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(R.string.settings_support_body),
+                style = MaterialTheme.typography.bodyMedium,
+                color = scheme.onSurface.copy(alpha = 0.72f),
+            )
+            if (donationUrl.isNotBlank()) {
+                Spacer(modifier = Modifier.height(14.dp))
+                Button(
+                    onClick = {
+                        val uri = runCatching { Uri.parse(donationUrl.trim()) }.getOrNull()
+                        if (uri == null || uri.scheme.isNullOrBlank()) {
+                            scope.launch { snackbarHostState.showSnackbar(openLinkFailed) }
+                            return@Button
+                        }
+                        try {
+                            context.startActivity(
+                                Intent(Intent.ACTION_VIEW, uri).apply {
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                },
+                            )
+                        } catch (_: Exception) {
+                            scope.launch { snackbarHostState.showSnackbar(openLinkFailed) }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = scheme.secondaryContainer,
+                        contentColor = scheme.onSecondaryContainer,
+                    ),
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.VolunteerActivism,
+                        contentDescription = null,
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = stringResource(R.string.settings_donate),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = stringResource(R.string.settings_donate_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = scheme.onSurface.copy(alpha = 0.55f),
+                )
+            }
 
             Spacer(modifier = Modifier.height(36.dp))
             Text(

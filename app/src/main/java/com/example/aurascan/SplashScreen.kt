@@ -13,6 +13,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -29,7 +30,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.outlined.QrCode2
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -46,12 +46,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
@@ -93,6 +95,11 @@ fun SplashScreen(
     }
 
     val scheme = MaterialTheme.colorScheme
+    val splashLogoPlate = if (scheme.surface.luminance() > 0.55f) {
+        Color.White
+    } else {
+        scheme.surfaceContainerHigh
+    }
     val interactionSource = remember { MutableInteractionSource() }
 
     var showContent by remember { mutableStateOf(false) }
@@ -111,16 +118,6 @@ fun SplashScreen(
         ),
         label = "glow",
     )
-    val iconPulse by infinite.animateFloat(
-        initialValue = 1f,
-        targetValue = 1.06f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1400, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse,
-        ),
-        label = "iconPulse",
-    )
-
     Box(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -200,52 +197,22 @@ fun SplashScreen(
                     modifier = Modifier.padding(horizontal = 28.dp),
                 ) {
                     Surface(
-                        modifier = Modifier.size(140.dp),
+                        modifier = Modifier.size(168.dp),
                         shape = RoundedCornerShape(36.dp),
-                        color = scheme.surfaceContainerHighest,
-                        tonalElevation = 2.dp,
-                        shadowElevation = 16.dp,
+                        color = splashLogoPlate,
+                        tonalElevation = 0.dp,
+                        shadowElevation = 10.dp,
                         border = BorderStroke(
-                            width = 1.5.dp,
-                            brush = Brush.linearGradient(
-                                colors = listOf(
-                                    scheme.primary.copy(alpha = 0.55f),
-                                    scheme.primary.copy(alpha = 0.15f),
-                                ),
-                            ),
+                            width = 1.dp,
+                            color = scheme.outline.copy(alpha = 0.1f),
                         ),
                     ) {
-                        Box(
+                        Image(
+                            painter = painterResource(R.drawable.aurascan_splash_logo),
+                            contentDescription = stringResource(R.string.splash_logo_cd),
                             modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(96.dp)
-                                    .clip(RoundedCornerShape(22.dp))
-                                    .background(
-                                        Brush.linearGradient(
-                                            colors = listOf(
-                                                scheme.primaryContainer.copy(alpha = 0.65f),
-                                                scheme.surfaceContainerHigh,
-                                            ),
-                                        ),
-                                    ),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.QrCode2,
-                                    contentDescription = stringResource(R.string.splash_logo_cd),
-                                    modifier = Modifier
-                                        .size(64.dp)
-                                        .graphicsLayer {
-                                            scaleX = iconPulse
-                                            scaleY = iconPulse
-                                        },
-                                    tint = scheme.primary,
-                                )
-                            }
-                        }
+                            contentScale = ContentScale.Fit,
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(32.dp))
