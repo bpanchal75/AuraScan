@@ -76,6 +76,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
@@ -468,21 +469,22 @@ private fun TechScannerOverlay(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .navigationBarsPadding()
-                .padding(bottom = 16.dp, start = 24.dp, end = 24.dp),
-            shape = RoundedCornerShape(12.dp),
-            color = scheme.scrim.copy(alpha = 0.45f),
-            border = BorderStroke(1.dp, scheme.primary.copy(alpha = 0.25f)),
+                .padding(bottom = 32.dp, start = 24.dp, end = 24.dp),
+            shape = RoundedCornerShape(16.dp),
+            color = Color.Black.copy(alpha = 0.65f),
+            border = BorderStroke(1.dp, Color.White.copy(alpha = 0.15f)),
         ) {
             Text(
                 text = stringResource(
                     when (scanMode) {
-                        ScanMode.Qr -> R.string.scan_instruction_qr
-                        ScanMode.Barcode -> R.string.scan_instruction_barcode
+                        ScanMode.Qr -> R.string.scan_hint_qr
+                        ScanMode.Barcode -> R.string.scan_hint_barcode
                     },
                 ),
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.White.copy(alpha = 0.92f),
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White,
+                textAlign = TextAlign.Center,
             )
         }
     }

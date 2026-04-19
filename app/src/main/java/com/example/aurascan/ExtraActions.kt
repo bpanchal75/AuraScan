@@ -57,3 +57,11 @@ fun whatsappUriForOpen(raw: String): Uri? {
     return null
 }
 
+fun instagramUriForOpen(raw: String): Uri? {
+    val t = raw.trim()
+    if (t.contains("instagram.com", ignoreCase = true)) {
+        return try { Uri.parse(t) } catch (_: Exception) { null }
+    }
+    return null
+}
+

@@ -100,6 +100,9 @@ fun ScanResultScreen(
     val whatsappUri = remember(payload, richPayloadActions) {
         if (richPayloadActions) whatsappUriForOpen(payload) else null
     }
+    val instagramUri = remember(payload, richPayloadActions) {
+        if (richPayloadActions) instagramUriForOpen(payload) else null
+    }
     val copiedMessage = stringResource(R.string.copied)
     val contactFailedMessage = stringResource(R.string.contact_action_failed)
     val actionFailedMessage = stringResource(R.string.action_failed)
@@ -232,7 +235,24 @@ fun ScanResultScreen(
             }
 
             if (wifiAction != null && wifiAction.isValid) {
-                // ... wifi button code ...
+                Spacer(modifier = Modifier.height(14.dp))
+                Button(
+                    onClick = {
+                        if (!context.connectToWifi(wifiAction)) {
+                            scope.launch { snackbarHostState.showSnackbar(context.getString(R.string.wifi_connect_failed)) }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = scheme.secondaryContainer,
+                        contentColor = scheme.onSecondaryContainer,
+                    ),
+                ) {
+                    Icon(imageVector = Icons.Outlined.Wifi, contentDescription = null)
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(text = stringResource(R.string.connect_wifi), style = MaterialTheme.typography.titleMedium)
+                }
             }
 
             if (geoUri != null) {
@@ -286,7 +306,28 @@ fun ScanResultScreen(
             }
 
             if (vCardIntent != null) {
-                // ... vcard button code ...
+                Spacer(modifier = Modifier.height(14.dp))
+                Button(
+                    onClick = {
+                        try {
+                            context.startActivity(vCardIntent.apply {
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+                        } catch (_: Exception) {
+                            scope.launch { snackbarHostState.showSnackbar(actionFailedMessage) }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = scheme.secondaryContainer,
+                        contentColor = scheme.onSecondaryContainer,
+                    ),
+                ) {
+                    Icon(imageVector = Icons.Outlined.PersonAdd, contentDescription = null)
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(text = stringResource(R.string.save_contact), style = MaterialTheme.typography.titleMedium)
+                }
             }
 
             if (whatsappUri != null) {
@@ -311,6 +352,31 @@ fun ScanResultScreen(
                     Icon(imageVector = Icons.AutoMirrored.Outlined.OpenInNew, contentDescription = null)
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(text = stringResource(R.string.open_whatsapp), style = MaterialTheme.typography.titleMedium)
+                }
+            }
+
+            if (instagramUri != null) {
+                Spacer(modifier = Modifier.height(14.dp))
+                Button(
+                    onClick = {
+                        try {
+                            context.startActivity(Intent(Intent.ACTION_VIEW, instagramUri).apply {
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            })
+                        } catch (_: Exception) {
+                            scope.launch { snackbarHostState.showSnackbar(actionFailedMessage) }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = scheme.secondaryContainer,
+                        contentColor = scheme.onSecondaryContainer,
+                    ),
+                ) {
+                    Icon(imageVector = Icons.AutoMirrored.Outlined.OpenInNew, contentDescription = null)
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(text = stringResource(R.string.open_instagram), style = MaterialTheme.typography.titleMedium)
                 }
             }
 

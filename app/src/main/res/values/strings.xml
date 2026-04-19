@@ -36,6 +36,8 @@
     <string name="scan_again_home">Scan another code</string>
     <string name="scan_again_qr">Scan another QR code</string>
     <string name="scan_again_barcode">Scan another barcode</string>
+    <string name="scan_hint_qr">Center the QR code in the frame</string>
+    <string name="scan_hint_barcode">Center the barcode in the frame</string>
     <string name="copy">Copy</string>
     <string name="copied">Copied to clipboard</string>
     <string name="clipboard_label">Scan result</string>
@@ -77,5 +79,6 @@
     <string name="add_calendar">Add to Calendar</string>
     <string name="save_contact">Save Contact</string>
     <string name="open_whatsapp">Open in WhatsApp</string>
+    <string name="open_instagram">Open in Instagram</string>
     <string name="action_failed">Action failed</string>
 </resources>
