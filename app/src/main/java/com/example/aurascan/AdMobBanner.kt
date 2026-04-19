@@ -96,38 +96,32 @@ fun AdMobBannerStripe(modifier: Modifier = Modifier) {
                 lifecycle.addObserver(observer)
 
                 var cancelled = false
-                val appContext = context.applicationContext
 
-                val initAndLoad: () -> Unit = load@{
-                    if (cancelled) return@load
-                    MobileAds.initialize(
-                        appContext,
-                        OnInitializationCompleteListener {
-                            if (cancelled) return@OnInitializationCompleteListener
-                            // loadAd after the view is in the hierarchy (SDK can skip render otherwise).
-                            adView.post {
-                                if (cancelled) return@post
+                val loadAd: () -> Unit = {
+                    if (!cancelled) {
+                        adView.post {
+                            if (!cancelled) {
                                 runCatching {
                                     adView.loadAd(AdRequest.Builder().build())
                                 }.onFailure { e ->
                                     Log.w(AdsLogTag, "loadAd failed", e)
                                 }
                             }
-                        },
-                    )
+                        }
+                    }
                 }
 
                 val attachListener = object : View.OnAttachStateChangeListener {
                     override fun onViewAttachedToWindow(v: View) {
                         adView.removeOnAttachStateChangeListener(this)
-                        initAndLoad()
+                        loadAd()
                     }
 
                     override fun onViewDetachedFromWindow(v: View) = Unit
                 }
 
                 if (adView.isAttachedToWindow) {
-                    initAndLoad()
+                    loadAd()
                 } else {
                     adView.addOnAttachStateChangeListener(attachListener)
                 }
