@@ -21,6 +21,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
+import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Email
@@ -87,6 +88,9 @@ fun ScanResultScreen(
     }
     val wifiAction = remember(payload, richPayloadActions) {
         if (richPayloadActions) parseWifiPayload(payload) else null
+    }
+    val bluetoothAction = remember(payload, richPayloadActions) {
+        if (richPayloadActions) parseBluetoothPayload(payload) else null
     }
     val geoUri = remember(payload, richPayloadActions) {
         if (richPayloadActions) geoUriForOpen(payload) else null
@@ -252,6 +256,25 @@ fun ScanResultScreen(
                     Icon(imageVector = Icons.Outlined.Wifi, contentDescription = null)
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(text = stringResource(R.string.connect_wifi), style = MaterialTheme.typography.titleMedium)
+                }
+            }
+
+            if (bluetoothAction != null && bluetoothAction.isValid) {
+                Spacer(modifier = Modifier.height(14.dp))
+                Button(
+                    onClick = {
+                        context.openBluetoothSettings()
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = scheme.secondaryContainer,
+                        contentColor = scheme.onSecondaryContainer,
+                    ),
+                ) {
+                    Icon(imageVector = Icons.Outlined.Bluetooth, contentDescription = null)
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(text = stringResource(R.string.pair_bluetooth), style = MaterialTheme.typography.titleMedium)
                 }
             }
 

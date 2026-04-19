@@ -74,6 +74,7 @@
 
     <string name="connect_wifi">Connect to Wi-Fi</string>
     <string name="wifi_connect_failed">Could not connect to Wi-Fi</string>
+    <string name="pair_bluetooth">Pair Bluetooth Device</string>
 
     <string name="open_maps">Open in Maps</string>
     <string name="add_calendar">Add to Calendar</string>
