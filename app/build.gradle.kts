@@ -1,7 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
 }
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+val hasReleaseKeystore: Boolean =
+    keystorePropertiesFile.exists().also { exists ->
+        if (exists) {
+            keystorePropertiesFile.inputStream().use { keystoreProperties.load(it) }
+        }
+    }
 
 android {
     namespace = "com.example.aurascan"
@@ -21,8 +32,30 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (hasReleaseKeystore) {
+            create("release") {
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+                storePassword = keystoreProperties.getProperty("storePassword")
+                storeFile = rootProject.file(
+                    checkNotNull(keystoreProperties.getProperty("storeFile")) {
+                        "keystore.properties must define storeFile (path to .jks or .keystore, relative to project root)"
+                    },
+                )
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig =
+                if (hasReleaseKeystore) {
+                    signingConfigs.getByName("release")
+                } else {
+                    // Play / production: add keystore.properties + keystore file at repo root (see comments below).
+                    signingConfigs.getByName("debug")
+                }
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

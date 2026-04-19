@@ -1,6 +1,10 @@
 package com.example.aurascan
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +31,12 @@ import kotlin.math.roundToInt
 
 private const val AdsLogTag = "AuraScanAds"
 
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
+}
+
 /**
  * Bottom banner using AdMob **anchored adaptive** size so the creative spans the slot width
  * (standard [AdSize.BANNER] is only 320dp wide and shows side gutters on phones).
@@ -47,12 +57,13 @@ fun AdMobBannerStripe(modifier: Modifier = Modifier) {
         val adWidthDp = maxWidth.value.roundToInt().coerceAtLeast(AdSize.BANNER.width)
 
         key(adWidthDp) {
-            val adView = remember(context, adWidthDp) {
+            val adContext = remember(context) { context.findActivity() ?: context }
+            val adView = remember(adContext, adWidthDp) {
                 val size = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-                    context,
+                    adContext,
                     adWidthDp,
                 )
-                AdView(context).apply {
+                AdView(adContext).apply {
                     setAdSize(size)
                     adUnitId = context.getString(R.string.admob_banner_unit_id)
                     layoutParams = ViewGroup.LayoutParams(
@@ -86,20 +97,44 @@ fun AdMobBannerStripe(modifier: Modifier = Modifier) {
 
                 var cancelled = false
                 val appContext = context.applicationContext
-                MobileAds.initialize(
-                    appContext,
-                    OnInitializationCompleteListener {
-                        if (cancelled) return@OnInitializationCompleteListener
-                        runCatching {
-                            adView.loadAd(AdRequest.Builder().build())
-                        }.onFailure { e ->
-                            Log.w(AdsLogTag, "loadAd failed", e)
-                        }
-                    },
-                )
+
+                val initAndLoad: () -> Unit = load@{
+                    if (cancelled) return@load
+                    MobileAds.initialize(
+                        appContext,
+                        OnInitializationCompleteListener {
+                            if (cancelled) return@OnInitializationCompleteListener
+                            // loadAd after the view is in the hierarchy (SDK can skip render otherwise).
+                            adView.post {
+                                if (cancelled) return@post
+                                runCatching {
+                                    adView.loadAd(AdRequest.Builder().build())
+                                }.onFailure { e ->
+                                    Log.w(AdsLogTag, "loadAd failed", e)
+                                }
+                            }
+                        },
+                    )
+                }
+
+                val attachListener = object : View.OnAttachStateChangeListener {
+                    override fun onViewAttachedToWindow(v: View) {
+                        adView.removeOnAttachStateChangeListener(this)
+                        initAndLoad()
+                    }
+
+                    override fun onViewDetachedFromWindow(v: View) = Unit
+                }
+
+                if (adView.isAttachedToWindow) {
+                    initAndLoad()
+                } else {
+                    adView.addOnAttachStateChangeListener(attachListener)
+                }
 
                 onDispose {
                     cancelled = true
+                    adView.removeOnAttachStateChangeListener(attachListener)
                     lifecycle.removeObserver(observer)
                     adView.destroy()
                 }
