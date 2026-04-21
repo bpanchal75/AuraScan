@@ -1,4 +1,4 @@
-package com.example.aurascan
+package com.aurascan.qrscanner
 
 import android.content.Context
 import android.content.Intent

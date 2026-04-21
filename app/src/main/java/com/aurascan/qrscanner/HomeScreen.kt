@@ -1,4 +1,4 @@
-package com.example.aurascan
+package com.aurascan.qrscanner
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode

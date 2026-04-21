@@ -1,4 +1,4 @@
-package com.example.aurascan
+package com.aurascan.qrscanner
 
 enum class ThemeMode {
     Light,

@@ -1,4 +1,4 @@
-package com.example.aurascan.ui.theme
+package com.aurascan.qrscanner.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

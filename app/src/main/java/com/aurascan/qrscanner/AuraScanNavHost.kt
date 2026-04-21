@@ -1,4 +1,4 @@
-package com.example.aurascan
+package com.aurascan.qrscanner
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

@@ -1,4 +1,4 @@
-package com.example.aurascan
+package com.aurascan.qrscanner
 
 import android.app.Application
 import com.google.android.gms.ads.MobileAds

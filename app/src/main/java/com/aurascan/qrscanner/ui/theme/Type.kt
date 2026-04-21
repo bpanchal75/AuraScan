@@ -1,4 +1,4 @@
-package com.example.aurascan.ui.theme
+package com.aurascan.qrscanner.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.aurascan.R
+import com.aurascan.qrscanner.R
 
 // Define the Segoe UI FontFamily using the ttf files in res/font
 val SegoeUI = FontFamily(

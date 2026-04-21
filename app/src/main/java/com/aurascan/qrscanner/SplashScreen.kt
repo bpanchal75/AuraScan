@@ -1,4 +1,4 @@
-package com.example.aurascan
+package com.aurascan.qrscanner
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable

@@ -1,4 +1,4 @@
-package com.example.aurascan
+package com.aurascan.qrscanner
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.aurascan.ui.theme.AuraScanTheme
+import com.aurascan.qrscanner.ui.theme.AuraScanTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -15,7 +15,7 @@ val hasReleaseKeystore: Boolean =
     }
 
 android {
-    namespace = "com.example.aurascan"
+    namespace = "com.aurascan.qrscanner"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -23,7 +23,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.aurascan"
+        applicationId = "com.aurascan.qrscanner"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
